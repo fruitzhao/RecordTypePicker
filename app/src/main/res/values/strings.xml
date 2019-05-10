@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MyPicker</string>
+    <string name="type_picker">笔录类型</string>
+</resources>
