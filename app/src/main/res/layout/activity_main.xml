@@ -1,13 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
 
-    <Button
-        android:layout_margin="20dp"
-        android:text="@string/type_picker"
-        android:id="@+id/show_picker"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="笔录类型:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_type"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="开始时间:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_time_start"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#cccccc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="到案方式:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/arrive_type"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#cccccc"/>
+
 
 </LinearLayout>

@@ -1,72 +1,121 @@
 package com.cmcc.mypicker;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.cmcc.mypicker.bean.JsonBean;
+import com.cmcc.mypicker.util.DateFormatUtil;
 import com.cmcc.mypicker.util.GetJsonDataUtil;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn_ShowPicker;
+    private TextView tx_recordType;
+    private TextView tx_StartTime;
+    private TextView tx_arriveType;
 
     //笔录类型Picker
     private OptionsPickerView recordTypePicker;
 
-    //三级选项数据
+    //时间picker
+    private TimePickerView timePickerView;
+
+    //到案方式Picker
+    private OptionsPickerView arriveTypePicker;
+
+    //笔录类型三级选项数据
     private List<JsonBean> optionsOneItems = new ArrayList<>();
     private ArrayList<ArrayList<String>> optionsTwoItems = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> optionsThreeItems = new ArrayList<>();
+
+    //到案方式选项数据
+    private ArrayList<String> optionsArriveType = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //initData();  ///等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃
-        initJsonData();
+        initData();  ///等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃
         initView();
     }
 
+    private void initData(){
+        initJsonData();   //通过解析json数据初始化笔录类型选项数据
+
+        //初始化到案方式选项数据
+        optionsArriveType.add("空");
+        optionsArriveType.add("口头传唤");
+        optionsArriveType.add("被扭送");
+        optionsArriveType.add("自动投案");
+    }
+
     private void initView() {
-        btn_ShowPicker = findViewById(R.id.show_picker);
-        initTypePicker();
-        btn_ShowPicker.setOnClickListener(new View.OnClickListener() {
+        tx_recordType = findViewById(R.id.text_type);
+        tx_StartTime = findViewById(R.id.text_time_start);
+        tx_arriveType = findViewById(R.id.arrive_type);
+        //添加一个下拉提示图标
+        Drawable arrowDown = getResources().getDrawable(R.drawable.arrow_down);
+        arrowDown.setBounds(0,0,80,80);
+        tx_recordType.setCompoundDrawables(null,null,arrowDown,null);
+        tx_StartTime.setCompoundDrawables(null,null,arrowDown,null);
+        tx_arriveType.setCompoundDrawables(null,null,arrowDown,null);
+        initRecordTypePicker();
+        initTimePicker();
+        initArriveTypePicker();
+        tx_recordType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recordTypePicker.show();
             }
         });
+        tx_StartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePickerView.show();
+            }
+        });
+        tx_arriveType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arriveTypePicker.show();
+            }
+        });
     }
 
-    private void initTypePicker() {
+    private void initRecordTypePicker() {
         recordTypePicker = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                //创建选中监听
+                //获得选中的三级选项内容
 //                String opt1tx = optionsOneItems.size() > 0 ?
 //                        optionsOneItems.get(options1) : ""; //手动添加选项时
                 String opt1tx = optionsOneItems.size() > 0 ?
                         optionsOneItems.get(options1).getPickerViewText() : "";  //解析json数据时
                 String opt2tx = optionsTwoItems.size() > 0
                         && optionsTwoItems.get(options1).size() > 0 ?
-                        optionsTwoItems.get(options1).get(options2) : "";
+                        " - " + optionsTwoItems.get(options1).get(options2) : "";
                 String opt3tx = optionsTwoItems.size() > 0
                         && optionsThreeItems.get(options1).size() > 0
                         && optionsThreeItems.get(options1).get(options2).size() > 0 ?
-                        optionsThreeItems.get(options1).get(options2).get(options3) : "";
-                String tx = opt1tx + " " + opt2tx + " " + opt3tx;
-                Toast.makeText(MainActivity.this, tx, Toast.LENGTH_SHORT).show();
+                        " - " + optionsThreeItems.get(options1).get(options2).get(options3) : "";
+                String tx = opt1tx + opt2tx + opt3tx;
+                tx_recordType.setText(tx);
             }
         })      .setTitleText("类型选择")
                 .setContentTextSize(22)  //选项文字大小
@@ -74,6 +123,30 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         //填充选项
         recordTypePicker.setPicker(optionsOneItems, optionsTwoItems, optionsThreeItems);
+    }
+
+    private void initTimePicker() {
+        timePickerView = new TimePickerBuilder(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                tx_StartTime.setText(DateFormatUtil.DateToString(date, "yyyy-MM-dd HH:mm"));
+                //Toast.makeText(MainActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }).setType(new boolean[]{true, true, true, true, true, false})
+                .isCenterLabel(true)
+                .build();
+    }
+
+    private void initArriveTypePicker() {
+        arriveTypePicker = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                tx_arriveType.setText(optionsArriveType.get(options1));
+            }
+        }).setTitleText("到案方式")
+                .setContentTextSize(22)
+                .build();
+        arriveTypePicker.setPicker(optionsArriveType);
     }
 
     private void initJsonData() {
@@ -115,93 +188,4 @@ public class MainActivity extends AppCompatActivity {
         return detail;
     }
 
-//    private void initData() {
-//        //一级选项--
-//        //填充Picker一级选项数据
-//        optionsOneItems.add("行政");
-//        optionsOneItems.add("刑事");
-//
-//        //二级选项--
-//        //属于一级选项1
-//        ArrayList<String> optionList2Of1 = new ArrayList<>();
-//        optionList2Of1.add("询问");
-//        optionList2Of1.add("检查");
-//        optionList2Of1.add("勘察");
-//        optionList2Of1.add("现场");
-//        //属于一级选项2
-//        ArrayList<String> optionList2Of2 = new ArrayList<>();
-//        optionList2Of2.add("询问");
-//        optionList2Of2.add("讯问");
-//        optionList2Of2.add("现场辨认");
-//        optionList2Of2.add("检查");
-//        optionList2Of2.add("查封");
-//        optionList2Of2.add("扣押");
-//        optionList2Of2.add("搜查");
-//        optionList2Of2.add("提取");
-//        optionList2Of2.add("复验复查");
-//        optionList2Of2.add("侦查实验");
-//        //填充Picker二级选项数据
-//        optionsTwoItems.add(optionList2Of1);
-//        optionsTwoItems.add(optionList2Of2);
-//
-//        //三级选项数据--
-//        //属于二级选项1-1
-//        ArrayList<String> optionList3Of1_1 = new ArrayList<>();
-//        optionList3Of1_1.add("证人");
-//        optionList3Of1_1.add("被侵害人");
-//        optionList3Of1_1.add("违法嫌疑人");
-//        //属于二级选项1-2
-//        ArrayList<String> optionList3Of1_2 = new ArrayList<>();
-//        //属于二级选项1-3
-//        ArrayList<String> optionList3Of1_3 = new ArrayList<>();
-//        //属于二级选项1-4
-//        ArrayList<String> optionList3Of1_4 = new ArrayList<>();
-//        //属于一级选项1
-//        ArrayList<ArrayList<String>> optionList3Of1 = new ArrayList<>();
-//        optionList3Of1.add(optionList3Of1_1);
-//        optionList3Of1.add(optionList3Of1_2);
-//        optionList3Of1.add(optionList3Of1_3);
-//        optionList3Of1.add(optionList3Of1_4);
-//
-//        //属于二级选项2-1
-//        ArrayList<String> optionList3Of2_1 = new ArrayList<>();
-//        optionList3Of2_1.add("被害人");
-//        optionList3Of2_1.add("证人");
-//        //属于二级选项2-2
-//        ArrayList<String> optionList3Of2_2 = new ArrayList<>();
-//        optionList3Of2_2.add("犯罪嫌疑人");
-//        //属于二级选项2-3
-//        ArrayList<String> optionList3Of2_3 = new ArrayList<>();
-//        //属于二级选项2-4
-//        ArrayList<String> optionList3Of2_4 = new ArrayList<>();
-//        //属于二级选项2-5
-//        ArrayList<String> optionList3Of2_5 = new ArrayList<>();
-//        //属于二级选项2-6
-//        ArrayList<String> optionList3Of2_6 = new ArrayList<>();
-//        //属于二级选项2-7
-//        ArrayList<String> optionList3Of2_7 = new ArrayList<>();
-//        //属于二级选项2-8
-//        ArrayList<String> optionList3Of2_8 = new ArrayList<>();
-//        //属于二级选项2-9
-//        ArrayList<String> optionList3Of2_9 = new ArrayList<>();
-//        //属于二级选项2-10
-//        ArrayList<String> optionList3Of2_10 = new ArrayList<>();
-//
-//        //属于一级选项2
-//        ArrayList<ArrayList<String>> optionList3Of2 = new ArrayList<>();
-//        optionList3Of2.add(optionList3Of2_1);
-//        optionList3Of2.add(optionList3Of2_2);
-//        optionList3Of2.add(optionList3Of2_3);
-//        optionList3Of2.add(optionList3Of2_4);
-//        optionList3Of2.add(optionList3Of2_5);
-//        optionList3Of2.add(optionList3Of2_6);
-//        optionList3Of2.add(optionList3Of2_7);
-//        optionList3Of2.add(optionList3Of2_8);
-//        optionList3Of2.add(optionList3Of2_9);
-//        optionList3Of2.add(optionList3Of2_10);
-//
-//        //填充Picker三级选项数据
-//        optionsThreeItems.add(optionList3Of1);
-//        optionsThreeItems.add(optionList3Of2);
-//    }
 }
