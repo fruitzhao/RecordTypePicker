@@ -1,9 +1,11 @@
 package com.cmcc.mypicker;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -23,11 +25,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private TextView tx_caseReason;
     private TextView tx_recordType;
     private TextView tx_StartTime;
     private TextView tx_arriveType;
+    private TextView tx_recordTimes;
+
+    private Button bt_time_1;
+    private Button bt_time_2;
+    private Button bt_time_3;
+    private Button bt_time_4;
+    private Button bt_time_5;
+
 
     //笔录类型Picker
     private OptionsPickerView recordTypePicker;
@@ -65,9 +76,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        tx_caseReason = findViewById(R.id.text_case_reason);
         tx_recordType = findViewById(R.id.text_type);
         tx_StartTime = findViewById(R.id.text_time_start);
         tx_arriveType = findViewById(R.id.arrive_type);
+        tx_recordTimes = findViewById(R.id.text_record_times);
+
+        bt_time_1 = findViewById(R.id.time_1);
+        bt_time_2 = findViewById(R.id.time_2);
+        bt_time_3 = findViewById(R.id.time_3);
+        bt_time_4 = findViewById(R.id.time_4);
+        bt_time_5 = findViewById(R.id.time_5);
+
+        bt_time_1.setOnClickListener(this);
+        bt_time_2.setOnClickListener(this);
+        bt_time_3.setOnClickListener(this);
+        bt_time_4.setOnClickListener(this);
+        bt_time_5.setOnClickListener(this);
+
+        //添加一个打开案件原因选项的右箭头
+        Drawable arrowRight = getResources().getDrawable(R.drawable.arrow_right);
+        arrowRight.setBounds(0,0,80,80);
+        tx_caseReason.setCompoundDrawables(null, null, arrowRight, null);
         //添加一个下拉提示图标
         Drawable arrowDown = getResources().getDrawable(R.drawable.arrow_down);
         arrowDown.setBounds(0,0,80,80);
@@ -77,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
         initRecordTypePicker();
         initTimePicker();
         initArriveTypePicker();
+        tx_caseReason.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PickReason.class);
+                startActivityForResult(intent, 1);
+            }
+        });
         tx_recordType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +132,29 @@ public class MainActivity extends AppCompatActivity {
                 arriveTypePicker.show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.time_1:
+                tx_recordTimes.setText("1");
+                break;
+            case R.id.time_2:
+                tx_recordTimes.setText("2");
+                break;
+            case R.id.time_3:
+                tx_recordTimes.setText("3");
+                break;
+            case R.id.time_4:
+                tx_recordTimes.setText("4");
+                break;
+            case R.id.time_5:
+                tx_recordTimes.setText("5");
+                break;
+                default:
+                    break;
+        }
     }
 
     private void initRecordTypePicker() {
@@ -186,6 +246,19 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return detail;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String pickedReason = data.getStringExtra("reason_picked");
+                    tx_caseReason.setText(pickedReason);
+                }
+                break;
+                default:
+        }
     }
 
 }

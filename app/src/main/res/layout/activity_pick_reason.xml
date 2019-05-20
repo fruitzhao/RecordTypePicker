@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <SearchView
+        android:id="@+id/reason_search"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:iconifiedByDefault="false"
+        android:queryHint="输入关键字进行快速查找" />
+
+    <ListView
+        android:id="@+id/reason_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>
