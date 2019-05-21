@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -33,12 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tx_arriveType;
     private TextView tx_recordTimes;
 
-    private Button bt_time_1;
-    private Button bt_time_2;
-    private Button bt_time_3;
-    private Button bt_time_4;
-    private Button bt_time_5;
-
 
     //笔录类型Picker
     private OptionsPickerView recordTypePicker;
@@ -61,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.pick_reason_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
         initData();  ///等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃
         initView();
     }
@@ -82,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tx_arriveType = findViewById(R.id.arrive_type);
         tx_recordTimes = findViewById(R.id.text_record_times);
 
-        bt_time_1 = findViewById(R.id.time_1);
-        bt_time_2 = findViewById(R.id.time_2);
-        bt_time_3 = findViewById(R.id.time_3);
-        bt_time_4 = findViewById(R.id.time_4);
-        bt_time_5 = findViewById(R.id.time_5);
+        Button bt_time_1 = findViewById(R.id.time_1);
+        Button bt_time_2 = findViewById(R.id.time_2);
+        Button bt_time_3 = findViewById(R.id.time_3);
+        Button bt_time_4 = findViewById(R.id.time_4);
+        Button bt_time_5 = findViewById(R.id.time_5);
 
         bt_time_1.setOnClickListener(this);
         bt_time_2.setOnClickListener(this);
@@ -94,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_time_4.setOnClickListener(this);
         bt_time_5.setOnClickListener(this);
 
-        //添加一个打开案件原因选项的右箭头
+        //添加一个提示打开案件原因选项的右箭头
         Drawable arrowRight = getResources().getDrawable(R.drawable.arrow_right);
         arrowRight.setBounds(0,0,80,80);
         tx_caseReason.setCompoundDrawables(null, null, arrowRight, null);
-        //添加一个下拉提示图标
+        //添加一个提示弹出选择器的下箭头
         Drawable arrowDown = getResources().getDrawable(R.drawable.arrow_down);
         arrowDown.setBounds(0,0,80,80);
         tx_recordType.setCompoundDrawables(null,null,arrowDown,null);
@@ -132,6 +136,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arriveTypePicker.show();
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save:
+                Toast.makeText(this, "已保存", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+        return true;
     }
 
     @Override

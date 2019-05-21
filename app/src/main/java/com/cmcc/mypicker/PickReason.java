@@ -1,13 +1,11 @@
 package com.cmcc.mypicker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -41,38 +39,35 @@ public class PickReason extends AppCompatActivity {
         adapter = new ArrayAdapter<>(PickReason.this, android.R.layout.simple_list_item_1, validList);
         listView.setAdapter(adapter);
 
-//        //修改搜索框文字颜色
-//        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-//        TextView textView = (TextView) searchView.findViewById(id);
-//        textView.setTextColor(Color.parseColor("#ffffff"));
-//        textView.setHintTextColor(Color.parseColor("#ffffff"));
-//        //取消下划线
-//        if (searchView != null) {
-//            try {        //--拿到字节码
-//                Class<?> argClass = searchView.getClass();
-//                //--指定某个私有属性,mSearchPlate是搜索框父布局的名字
-//                Field ownField = argClass.getDeclaredField("mSearchPlate");
-//                //--暴力反射,只有暴力反射才能拿到私有属性
-//                ownField.setAccessible(true);
-//                View mView = (View) ownField.get(searchView);
-//                //--设置背景
-//                mView.setBackgroundColor(Color.TRANSPARENT);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        //修改搜索图标颜色
-//        int magId = getResources().getIdentifier("android:id/search_mag_icon",null, null);
-//        ImageView magImage = (ImageView) searchView.findViewById(magId);
-//        //magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
-//        magImage.setColorFilter(Color.parseColor("#ffffff"));
+        //修改搜索框文字颜色
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.parseColor("#ffffff"));
+        textView.setHintTextColor(Color.parseColor("#ffffff"));
+        //取消下划线
+        if (searchView != null) {
+            try {        //--拿到字节码
+                Class<?> argClass = searchView.getClass();
+                //--指定某个私有属性,mSearchPlate是搜索框父布局的名字
+                Field ownField = argClass.getDeclaredField("mSearchPlate");
+                //--暴力反射,只有暴力反射才能拿到私有属性
+                ownField.setAccessible(true);
+                View mView = (View) ownField.get(searchView);
+                //--设置背景
+                mView.setBackgroundColor(Color.TRANSPARENT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //修改搜索图标颜色
+        int magId = getResources().getIdentifier("android:id/search_mag_icon",null, null);
+        ImageView magImage = (ImageView) searchView.findViewById(magId);
+        //magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+        magImage.setColorFilter(Color.parseColor("#ffffff"));
 
         searchView.setFocusable(true);
         searchView.setFocusableInTouchMode(true);
         searchView.requestFocus();
-//        InputMethodManager inputMethodManager = (InputMethodManager) searchView.getContext().
-//                getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.showSoftInput(searchView, 0);
 
         // 设置搜索文本监听
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -115,6 +110,7 @@ public class PickReason extends AppCompatActivity {
         });
     }
 
+
     public void initList() {
         reasonList = new ArrayList<>();
         reasonList.add("a");
@@ -135,12 +131,12 @@ public class PickReason extends AppCompatActivity {
         reasonList.add("abc");
         reasonList.add("a");
         reasonList.add("b");
-        reasonList.add("c");
-        reasonList.add("ab");
-        reasonList.add("ac");
-        reasonList.add("bc");
-        reasonList.add("ba");
-        reasonList.add("abc");
+        reasonList.add("故意伤人");
+        reasonList.add("盗窃");
+        reasonList.add("抢劫");
+        reasonList.add("杀人");
+        reasonList.add("放火");
+        reasonList.add("诈骗");
         validList = new ArrayList<>();
         validList.addAll(reasonList);
     }
