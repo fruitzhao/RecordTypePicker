@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="案件原因:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_case_reason"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:freezesText="true"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="笔录类型:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_type"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:freezesText="true"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="开始时间:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_time_start"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:freezesText="true"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="到案方式:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/arrive_type"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:freezesText="true"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="次　　数:"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/text_record_times"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:textColor="#757575"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:freezesText="true"/>
+
+        <Button
+            android:id="@+id/time_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="1"
+            android:layout_gravity="center_vertical"/>
+        <Button
+            android:id="@+id/time_2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="2"
+            android:layout_gravity="center_vertical"/>
+        <Button
+            android:id="@+id/time_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="3"
+            android:layout_gravity="center_vertical"/>
+        <Button
+            android:id="@+id/time_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="4"
+            android:layout_gravity="center_vertical"/>
+        <Button
+            android:id="@+id/time_5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="5"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
