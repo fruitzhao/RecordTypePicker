@@ -4,7 +4,7 @@ import com.contrarywind.interfaces.IPickerViewData;
 
 import java.util.List;
 
-public class JsonBean implements IPickerViewData {
+public class RecordTypeBean implements IPickerViewData {
     /**
      * name: 行政
      * typeOf2: [{name:询问, typeOf3:[证人， 被侵害人， 违法嫌疑人] ]

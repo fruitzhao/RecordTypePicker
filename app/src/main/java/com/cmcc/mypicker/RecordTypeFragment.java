@@ -1,14 +1,15 @@
 package com.cmcc.mypicker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -17,7 +18,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.cmcc.mypicker.bean.JsonBean;
+import com.cmcc.mypicker.bean.RecordTypeBean;
 import com.cmcc.mypicker.util.DateFormatUtil;
 import com.cmcc.mypicker.util.GetJsonDataUtil;
 import com.google.gson.Gson;
@@ -30,15 +31,15 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class RecordTypeFragment extends Fragment implements View.OnClickListener{
+public class RecordTypeFragment extends Fragment {
 
-    private View view;
+    private TextView tx_CaseReason;   //案件原因
+    private TextView tx_RecordType;   //笔录类型
+    private TextView tx_StartTime;    //开始时间
+    private TextView tx_ArriveType;   //到案方式
+    private TextView tx_RecordTimes;  //次数
 
-    private TextView tx_caseReason;
-    private TextView tx_recordType;
-    private TextView tx_StartTime;
-    private TextView tx_arriveType;
-    private TextView tx_recordTimes;
+    private Spinner mSpinner;   //次数选择spinner
 
 
     //笔录类型Picker
@@ -51,7 +52,7 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
     private OptionsPickerView arriveTypePicker;
 
     //笔录类型三级选项数据
-    private List<JsonBean> optionsOneItems = new ArrayList<>();
+    private List<RecordTypeBean> optionsOneItems = new ArrayList<>();
     private ArrayList<ArrayList<String>> optionsTwoItems = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> optionsThreeItems = new ArrayList<>();
 
@@ -60,7 +61,7 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frag_record_type, container, false);
+        View view = inflater.inflate(R.layout.frag_record_type, container, false);
         return view;
     }
 
@@ -83,45 +84,47 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
-        tx_caseReason = getView().findViewById(R.id.text_case_reason);
-        tx_recordType = getView().findViewById(R.id.text_type);
+        tx_CaseReason = getView().findViewById(R.id.text_case_reason);
+        tx_RecordType = getView().findViewById(R.id.text_type);
         tx_StartTime = getView().findViewById(R.id.text_time_start);
-        tx_arriveType = getView().findViewById(R.id.arrive_type);
-        tx_recordTimes = getView().findViewById(R.id.text_record_times);
+        tx_ArriveType = getView().findViewById(R.id.arrive_type);
+        tx_RecordTimes = getView().findViewById(R.id.text_record_times);
 
-        Button bt_time_1 = getView().findViewById(R.id.time_1);
-        Button bt_time_2 = getView().findViewById(R.id.time_2);
-        Button bt_time_3 = getView().findViewById(R.id.time_3);
-        Button bt_time_4 = getView().findViewById(R.id.time_4);
-        Button bt_time_5 = getView().findViewById(R.id.time_5);
+        mSpinner = getView().findViewById(R.id.times_spinner);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String times= mSpinner.getItemAtPosition(position).toString();
+                    tx_RecordTimes.setText(times);
+                }
 
-        bt_time_1.setOnClickListener(this);
-        bt_time_2.setOnClickListener(this);
-        bt_time_3.setOnClickListener(this);
-        bt_time_4.setOnClickListener(this);
-        bt_time_5.setOnClickListener(this);
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+        });
+        mSpinner.setGravity(Gravity.CENTER_HORIZONTAL);
 
         //添加一个提示打开案件原因选项的右箭头
         Drawable arrowRight = getResources().getDrawable(R.drawable.arrow_right);
         arrowRight.setBounds(0,0,80,80);
-        tx_caseReason.setCompoundDrawables(null, null, arrowRight, null);
+        tx_CaseReason.setCompoundDrawables(null, null, arrowRight, null);
         //添加一个提示弹出选择器的下箭头
         Drawable arrowDown = getResources().getDrawable(R.drawable.arrow_down);
         arrowDown.setBounds(0,0,80,80);
-        tx_recordType.setCompoundDrawables(null,null,arrowDown,null);
+        tx_RecordType.setCompoundDrawables(null,null,arrowDown,null);
         tx_StartTime.setCompoundDrawables(null,null,arrowDown,null);
-        tx_arriveType.setCompoundDrawables(null,null,arrowDown,null);
+        tx_ArriveType.setCompoundDrawables(null,null,arrowDown,null);
         initRecordTypePicker();
         initTimePicker();
         initArriveTypePicker();
-        tx_caseReason.setOnClickListener(new View.OnClickListener() {
+        tx_CaseReason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PickReason.class);
                 startActivityForResult(intent, 1);
             }
         });
-        tx_recordType.setOnClickListener(new View.OnClickListener() {
+        tx_RecordType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recordTypePicker.show();
@@ -133,36 +136,12 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
                 timePickerView.show();
             }
         });
-        tx_arriveType.setOnClickListener(new View.OnClickListener() {
+        tx_ArriveType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 arriveTypePicker.show();
             }
         });
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.time_1:
-                tx_recordTimes.setText("1");
-                break;
-            case R.id.time_2:
-                tx_recordTimes.setText("2");
-                break;
-            case R.id.time_3:
-                tx_recordTimes.setText("3");
-                break;
-            case R.id.time_4:
-                tx_recordTimes.setText("4");
-                break;
-            case R.id.time_5:
-                tx_recordTimes.setText("5");
-                break;
-            default:
-                break;
-        }
     }
 
     private void initRecordTypePicker() {
@@ -183,14 +162,14 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
                         && optionsThreeItems.get(options1).get(options2).size() > 0 ?
                         " - " + optionsThreeItems.get(options1).get(options2).get(options3) : "";
                 String tx = opt1tx + opt2tx + opt3tx;
-                tx_recordType.setText(tx);
+                tx_RecordType.setText(tx);
             }
         })      .setTitleText("类型选择")
                 .setContentTextSize(22)  //选项文字大小
                 .isRestoreItem(true)   //前一选项变化则后面选项复位到第一项
                 .build();
         //填充选项
-        recordTypePicker.setPicker(optionsOneItems, optionsTwoItems, optionsThreeItems);
+        recordTypePicker.setPicker(optionsOneItems, optionsTwoItems);
     }
 
     private void initTimePicker() {
@@ -209,7 +188,7 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
         arriveTypePicker = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                tx_arriveType.setText(optionsArriveType.get(options1));
+                tx_ArriveType.setText(optionsArriveType.get(options1));
             }
         }).setTitleText("到案方式")
                 .setContentTextSize(22)
@@ -219,7 +198,7 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
 
     private void initJsonData() {
         String jsonData = new GetJsonDataUtil().getJson(getActivity(), "record_type.json");
-        ArrayList<JsonBean> jsonBean = parseData(jsonData);//用Gson 转成实体
+        ArrayList<RecordTypeBean> jsonBean = parseData(jsonData);//用Gson 转成实体
 
         optionsOneItems = jsonBean;
 
@@ -241,13 +220,13 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
 
     }
 
-    private ArrayList<JsonBean> parseData(String jsonData) {
-        ArrayList<JsonBean> detail = new ArrayList<>();
+    private ArrayList<RecordTypeBean> parseData(String jsonData) {
+        ArrayList<RecordTypeBean> detail = new ArrayList<>();
         try {
             JSONArray data = new JSONArray(jsonData);
             Gson gson = new Gson();
             for (int i = 0; i < data.length(); i++) {
-                JsonBean entity = gson.fromJson(data.optJSONObject(i).toString(), JsonBean.class);
+                RecordTypeBean entity = gson.fromJson(data.optJSONObject(i).toString(), RecordTypeBean.class);
                 detail.add(entity);
             }
         } catch (Exception e) {
@@ -262,7 +241,7 @@ public class RecordTypeFragment extends Fragment implements View.OnClickListener
             case 1:
                 if (resultCode == RESULT_OK) {
                     String pickedReason = data.getStringExtra("reason_picked");
-                    tx_caseReason.setText(pickedReason);
+                    tx_CaseReason.setText(pickedReason);
                 }
                 break;
             default:

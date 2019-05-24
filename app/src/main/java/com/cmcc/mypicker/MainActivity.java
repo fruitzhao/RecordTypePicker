@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         mFragments = new Fragment[4];
         fragIndex = 0;
         mFragments[0] = new RecordTypeFragment();
-        mFragments[1] = new RecordTypeFragment();
+        mFragments[1] = new PersonInfoFragment();
         mFragments[2] = new RecordTypeFragment();
-        mFragments[3] = new RecordTypeFragment();
+        mFragments[3] = new PersonInfoFragment();
     }
 
     private void initView() {
