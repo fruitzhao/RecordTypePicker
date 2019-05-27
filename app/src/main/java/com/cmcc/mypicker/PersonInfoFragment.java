@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -22,6 +21,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.cmcc.mypicker.bean.ProvinceBean;
 import com.cmcc.mypicker.util.DateFormatUtil;
 import com.cmcc.mypicker.util.GetJsonDataUtil;
+import com.cmcc.mypicker.util.SoftKeyboardUtil;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -35,15 +35,20 @@ public class PersonInfoFragment extends Fragment {
     private TextView tx_BirthAddress;
     private TextView tx_BirthDay;
 
+    //省市区选择器三级选项
     private List<ProvinceBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+
     private Thread thread;
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
 
     private static boolean isLoaded = false;
+
+    //统计EditText控件，管理软键盘弹出
+    List<View> inputViewList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +61,12 @@ public class PersonInfoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         initView();
+    }
+
+    public void initView() {
+        tx_BirthAddress = getView().findViewById(R.id.text_birth_address);
+        tx_BirthDay = getView().findViewById(R.id.text_birthday);
+
         tx_BirthAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,11 +79,11 @@ public class PersonInfoFragment extends Fragment {
                 showDayPicker();
             }
         });
-    }
 
-    public void initView() {
-        tx_BirthAddress = getView().findViewById(R.id.text_birth_address);
-        tx_BirthDay = getView().findViewById(R.id.text_birthday);
+        inputViewList.add(getView().findViewById(R.id.input_card_num));
+        inputViewList.add(getView().findViewById(R.id.input_person_name));
+        inputViewList.add(getView().findViewById(R.id.input_phone_num));
+
         //添加一个提示弹出选择器的下箭头
         Drawable arrowDown = getResources().getDrawable(R.drawable.arrow_down);
         arrowDown.setBounds(0,0,80,80);
@@ -120,12 +131,12 @@ public class PersonInfoFragment extends Fragment {
                         && options2Items.get(options1).size() > 0 ?
                         options2Items.get(options1).get(options2) : "";
 
-                String opt3tx = options2Items.size() > 0
-                        && options3Items.get(options1).size() > 0
-                        && options3Items.get(options1).get(options2).size() > 0 ?
-                        options3Items.get(options1).get(options2).get(options3) : "";
+//                String opt3tx = options2Items.size() > 0
+//                        && options3Items.get(options1).size() > 0
+//                        && options3Items.get(options1).get(options2).size() > 0 ?
+//                        options3Items.get(options1).get(options2).get(options3) : "";
 
-                String tx = opt1tx + opt2tx + opt3tx;
+                String tx = opt1tx + opt2tx;
                 tx_BirthAddress.setText(tx);
             }
         }).setTitleText("城市选择")
@@ -134,9 +145,10 @@ public class PersonInfoFragment extends Fragment {
                 .setContentTextSize(20)
                 .build();
 
-        /*pvOptions.setPicker(options1Items);//一级选择器
-        pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
-        pvOptions.setPicker(options1Items, options2Items);//三级选择器
+        //pvOptions.setPicker(options1Items);//一级选择器
+        pvOptions.setPicker(options1Items, options2Items);//二级选择器
+        //pvOptions.setPicker(options1Items, options2Items, option3Items);//三级选择器
+        SoftKeyboardUtil.hideSoftKeyboard(getContext(), inputViewList);
         pvOptions.show();
     }
 
@@ -230,6 +242,7 @@ public class PersonInfoFragment extends Fragment {
         }).setType(new boolean[]{true, true, true, false, false, false})
                 .isCenterLabel(true)
                 .build();
+        SoftKeyboardUtil.hideSoftKeyboard(getContext(), inputViewList);
         dayPickerView.show();
     }
 }

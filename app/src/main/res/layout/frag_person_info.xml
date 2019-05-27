@@ -20,7 +20,7 @@
             android:textSize="20sp"/>
 
         <EditText
-            android:id="@+id/text_person_name"
+            android:id="@+id/input_person_name"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="40dp"
@@ -28,7 +28,8 @@
             android:textColor="#757575"
             android:gravity="start|center_vertical"
             android:layout_gravity="center_vertical"
-            android:freezesText="true"/>
+            android:freezesText="true"
+            android:background="@null"/>
 
     </LinearLayout>
 
@@ -83,8 +84,8 @@
             android:layout_gravity="center_vertical"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/text_card_num"
+        <EditText
+            android:id="@+id/input_card_num"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="40dp"
@@ -92,7 +93,8 @@
             android:textColor="#757575"
             android:gravity="start|center_vertical"
             android:layout_gravity="center_vertical"
-            android:freezesText="true"/>
+            android:freezesText="true"
+            android:background="@null"/>
 
     </LinearLayout>
 
@@ -179,8 +181,8 @@
             android:layout_gravity="center_vertical"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/text_record_times"
+        <EditText
+            android:id="@+id/input_phone_num"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="40dp"
@@ -188,7 +190,8 @@
             android:textColor="#757575"
             android:gravity="start|center_vertical"
             android:layout_gravity="center_vertical"
-            android:freezesText="true"/>
+            android:freezesText="true"
+            android:background="@null"/>
 
 
 

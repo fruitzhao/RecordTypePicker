@@ -1,5 +1,6 @@
 package com.cmcc.mypicker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,9 +39,9 @@ public class RecordTypeFragment extends Fragment {
     private TextView tx_RecordType;   //笔录类型
     private TextView tx_StartTime;    //开始时间
     private TextView tx_ArriveType;   //到案方式
-    private TextView tx_RecordTimes;  //次数
+    //private TextView tx_RecordTimes;  //次数
 
-    private Spinner mSpinner;   //次数选择spinner
+    //private Spinner mSpinner;   //次数选择spinner
 
 
     //笔录类型Picker
@@ -88,21 +90,21 @@ public class RecordTypeFragment extends Fragment {
         tx_RecordType = getView().findViewById(R.id.text_type);
         tx_StartTime = getView().findViewById(R.id.text_time_start);
         tx_ArriveType = getView().findViewById(R.id.arrive_type);
-        tx_RecordTimes = getView().findViewById(R.id.text_record_times);
+        //tx_RecordTimes = getView().findViewById(R.id.text_record_times);
 
-        mSpinner = getView().findViewById(R.id.times_spinner);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String times= mSpinner.getItemAtPosition(position).toString();
-                    tx_RecordTimes.setText(times);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-        });
-        mSpinner.setGravity(Gravity.CENTER_HORIZONTAL);
+//        mSpinner = getView().findViewById(R.id.times_spinner);
+//        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    String times= mSpinner.getItemAtPosition(position).toString();
+//                    tx_RecordTimes.setText(times);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+//                }
+//        });
+//        mSpinner.setGravity(Gravity.CENTER_HORIZONTAL);
 
         //添加一个提示打开案件原因选项的右箭头
         Drawable arrowRight = getResources().getDrawable(R.drawable.arrow_right);
@@ -169,7 +171,7 @@ public class RecordTypeFragment extends Fragment {
                 .isRestoreItem(true)   //前一选项变化则后面选项复位到第一项
                 .build();
         //填充选项
-        recordTypePicker.setPicker(optionsOneItems, optionsTwoItems);
+        recordTypePicker.setPicker(optionsOneItems, optionsTwoItems, optionsThreeItems);
     }
 
     private void initTimePicker() {
