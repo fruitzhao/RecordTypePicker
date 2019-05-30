@@ -91,6 +91,7 @@ public class PersonInfoFragment extends Fragment {
         tx_BirthDay.setCompoundDrawables(null, null, arrowDown, null);
     }
 
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {

@@ -13,24 +13,25 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    //首页为包含4个fragment的TabLayout
     private TabLayout mTabLayout;
     private Fragment[] mFragments;
     private Toolbar mToolbar;
-    private int fragIndex;
+    private int fragIndex;        //指示当前fragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initData();  ///等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃
+        initFragments();
         initView();
     }
 
-    private void initData(){
+    private void initFragments(){
         mFragments = new Fragment[4];
         fragIndex = 0;
-        mFragments[0] = new RecordTypeFragment();
-        mFragments[1] = new PersonInfoFragment();
+        mFragments[0] = new RecordTypeFragment();  //笔录类型
+        mFragments[1] = new PersonInfoFragment();  //人员信息
         mFragments[2] = new RecordTypeFragment();
         mFragments[3] = new PersonInfoFragment();
     }
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //下一步/确定 按钮
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
